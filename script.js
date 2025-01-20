@@ -1,5 +1,16 @@
-// Achterbahnen-Daten
-const achterbahnen = JSON.parse(localStorage.getItem("achterbahnen")) || [
+// Robust: Daten sicher aus localStorage abrufen
+function loadAchterbahnen() {
+  try {
+    // Versuche, gespeicherte Daten aus localStorage zu laden
+    const storedData = localStorage.getItem("achterbahnen");
+    if (storedData) {
+      return JSON.parse(storedData); // Versuche, die Daten zu parsen
+    }
+  } catch (error) {
+    console.error("Fehler beim Laden von Achterbahnen aus localStorage:", error);
+  }
+  // Fallback auf die Standardliste, wenn ein Fehler auftritt
+  return [
   { name: "Kingda Ka", park: "Six Flags Great Adventure", elo: 1200 },
   { name: "Top Thrill Dragster", park: "Cedar Point", elo: 1200 },
   { name: "Steel Vengeance", park: "Cedar Point", elo: 1200 },
@@ -197,29 +208,29 @@ const achterbahnen = JSON.parse(localStorage.getItem("achterbahnen")) || [
   { name: "Jack Rabbit", park: "Kennywood", elo: 1200 },
   { name: "Racer", park: "Kennywood", elo: 1200 },
   { name: "Excalibur", park: "Funtown Splashtown USA", elo: 1200 }
-];
+  ];
+}
 
+// Daten initialisieren
+const achterbahnen = loadAchterbahnen();
 
-
-
-
-// Elemente abrufen
+// DOM-Elemente abrufen
 const option1 = document.getElementById("option1");
 const option2 = document.getElementById("option2");
 const rankingList = document.getElementById("ranking-list");
 
-// Zufällige Achterbahnen anzeigen
+// Zwei zufällige Achterbahnen auswählen und anzeigen
 function showRandomChoices() {
   const [a, b] = pickTwoRandom(achterbahnen);
   option1.innerHTML = `<div>${a.name}</div><div>${a.park}</div>`;
   option2.innerHTML = `<div>${b.name}</div><div>${b.park}</div>`;
 
-  // Klick-Handler setzen
+  // Event-Handler für Abstimmung setzen
   option1.onclick = () => vote(a, b);
   option2.onclick = () => vote(b, a);
 }
 
-// Zwei verschiedene Achterbahnen auswählen
+// Zufällige Auswahl von zwei Achterbahnen
 function pickTwoRandom(list) {
   let index1 = Math.floor(Math.random() * list.length);
   let index2;
@@ -229,42 +240,50 @@ function pickTwoRandom(list) {
   return [list[index1], list[index2]];
 }
 
-// ELO-Berechnung
-function calculateElo(winner, loser) {
-  const k = 32;
-  const probWinner = 1 / (1 + Math.pow(10, (loser.elo - winner.elo) / 400));
-  const probLoser = 1 - probWinner;
-
-  winner.elo += Math.round(k * probLoser);
-  loser.elo -= Math.round(k * probLoser);
-}
-
-// Abstimmung verarbeiten
+// Abstimmung verarbeiten und ELO-Werte anpassen
 function vote(winner, loser) {
   calculateElo(winner, loser);
-  saveData();
+  saveAchterbahnen(achterbahnen);
   updateRanking();
   showRandomChoices();
 }
 
-// Ranking aktualisieren
+// ELO-Berechnung
+function calculateElo(winner, loser) {
+  const k = 32;
+  const expectedWinner = 1 / (1 + Math.pow(10, (loser.elo - winner.elo) / 400));
+  const expectedLoser = 1 - expectedWinner;
+
+  winner.elo += Math.round(k * expectedLoser);
+  loser.elo -= Math.round(k * expectedLoser);
+}
+
+// Daten in localStorage speichern
+function saveAchterbahnen(data) {
+  try {
+    localStorage.setItem("achterbahnen", JSON.stringify(data));
+  } catch (error) {
+    console.error("Fehler beim Speichern von Achterbahnen in localStorage:", error);
+  }
+}
+
+// Top 10 Ranking aktualisieren
 function updateRanking() {
-  rankingList.innerHTML = "";
-  achterbahnen
+  rankingList.innerHTML = ""; // Bestehende Liste leeren
+
+  // Top 10 Achterbahnen basierend auf ELO-Wert
+  const top10 = achterbahnen
     .sort((a, b) => b.elo - a.elo)
-    .forEach((bahn) => {
-      const li = document.createElement("li");
-      li.textContent = `${bahn.name} (${bahn.park}): ${bahn.elo}`;
-      rankingList.appendChild(li);
-    });
+    .slice(0, 10);
+
+  // Top 10 anzeigen
+  top10.forEach((bahn, index) => {
+    const li = document.createElement("li");
+    li.textContent = `${index + 1}. ${bahn.name} (${bahn.park}): ${bahn.elo}`;
+    rankingList.appendChild(li);
+  });
 }
 
-// Daten speichern
-function saveData() {
-  localStorage.setItem("achterbahnen", JSON.stringify(achterbahnen));
-}
-
-// Start
+// Initiale Anzeige
 updateRanking();
 showRandomChoices();
-
