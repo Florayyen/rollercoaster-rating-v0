@@ -271,18 +271,19 @@ function saveAchterbahnen(data) {
 function updateRanking() {
   rankingList.innerHTML = ""; // Bestehende Liste leeren
 
-  // Top 10 Achterbahnen basierend auf ELO-Wert
-  const top10 = achterbahnen
+  // Sortiere die Achterbahnen nach ELO-Wert absteigend und begrenze auf die Top 10
+  const top10 = [...achterbahnen]
     .sort((a, b) => b.elo - a.elo)
     .slice(0, 10);
 
-  // Top 10 anzeigen
+  // Top 10 in die Rangliste einfügen
   top10.forEach((bahn, index) => {
     const li = document.createElement("li");
     li.textContent = `${index + 1}. ${bahn.name} (${bahn.park}): ${bahn.elo}`;
     rankingList.appendChild(li);
   });
 }
+
 
 // Initiale Anzeige
 updateRanking();
