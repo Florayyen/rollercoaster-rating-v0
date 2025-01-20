@@ -90,6 +90,8 @@ const rankingList = document.getElementById("ranking-list");
 // Zufällige Achterbahnen anzeigen
 function showRandomChoices() {
   const [a, b] = pickTwoRandom(achterbahnen);
+
+  // Button-Text mit Achterbahn- und Parknamen erstellen
   option1.innerHTML = `<div>${a.name}</div><div>${a.park}</div>`;
   option2.innerHTML = `<div>${b.name}</div><div>${b.park}</div>`;
 
@@ -97,6 +99,7 @@ function showRandomChoices() {
   option1.onclick = () => vote(a, b);
   option2.onclick = () => vote(b, a);
 }
+
 
 // Zwei verschiedene Achterbahnen auswählen
 function pickTwoRandom(list) {
