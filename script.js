@@ -140,7 +140,7 @@ const achterbahnen = JSON.parse(localStorage.getItem("achterbahnen")) || [
 { name: "Battlestar Galactica: Human", park: "Universal Studios Singapore", elo: 1200 },
 { name: "Battlestar Galactica: Cylon", park: "Universal Studios Singapore", elo: 1200 },
 { name: "Hair Raiser", park: "Ocean Park Hong Kong", elo: 1200 },
-{ name: "Abyss Turbo Drop", park: "Ocean Park Hong Kong", elo: 1200 }
+{ name: "Abyss Turbo Drop", park: "Ocean Park Hong Kong", elo: 1200 },
 { name: "Timber Mountain Log Ride", park: "Knott's Berry Farm", elo: 1200 },
 { name: "GhostRider", park: "Knott's Berry Farm", elo: 1200 },
 { name: "Xcelerator", park: "Knott's Berry Farm", elo: 1200 },
