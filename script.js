@@ -78,7 +78,7 @@ const achterbahnen = JSON.parse(localStorage.getItem("achterbahnen")) || [
   { name: "Revenge of the Mummy", park: "Universal Studios Orlando", elo: 1200 },
   { name: "Hagrid's Magical Creatures Motorbike Adventure", park: "Universal's Islands of Adventure", elo: 1200 },
   { name: "VelociCoaster", park: "Universal's Islands of Adventure", elo: 1200 },
-  { name: "Jurassic World: The Ride", park: "Universal Studios Hollywood", elo: 1200 }
+  { name: "Jurassic World: The Ride", park: "Universal Studios Hollywood", elo: 1200 },
   { name: "California Screamin’", park: "Disney California Adventure", elo: 1200 },
 { name: "Rock 'n' Roller Coaster", park: "Disney's Hollywood Studios", elo: 1200 },
 { name: "Radiator Springs Racers", park: "Disney California Adventure", elo: 1200 },
@@ -200,6 +200,8 @@ const achterbahnen = JSON.parse(localStorage.getItem("achterbahnen")) || [
 ];
 
 
+
+
 // Elemente abrufen
 const option1 = document.getElementById("option1");
 const option2 = document.getElementById("option2");
@@ -208,8 +210,6 @@ const rankingList = document.getElementById("ranking-list");
 // Zufällige Achterbahnen anzeigen
 function showRandomChoices() {
   const [a, b] = pickTwoRandom(achterbahnen);
-
-  // Button-Text mit Achterbahn- und Parknamen erstellen
   option1.innerHTML = `<div>${a.name}</div><div>${a.park}</div>`;
   option2.innerHTML = `<div>${b.name}</div><div>${b.park}</div>`;
 
@@ -217,7 +217,6 @@ function showRandomChoices() {
   option1.onclick = () => vote(a, b);
   option2.onclick = () => vote(b, a);
 }
-
 
 // Zwei verschiedene Achterbahnen auswählen
 function pickTwoRandom(list) {
@@ -259,7 +258,6 @@ function updateRanking() {
     });
 }
 
-
 // Daten speichern
 function saveData() {
   localStorage.setItem("achterbahnen", JSON.stringify(achterbahnen));
@@ -268,3 +266,4 @@ function saveData() {
 // Start
 updateRanking();
 showRandomChoices();
+
