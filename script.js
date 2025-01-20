@@ -249,15 +249,21 @@ function vote(winner, loser) {
 
 // Ranking aktualisieren
 function updateRanking() {
-  rankingList.innerHTML = "";
-  achterbahnen
+  rankingList.innerHTML = ""; // Bestehende Liste löschen
+  
+  // Sortiere die Achterbahnen nach ELO-Wert absteigend und nehme nur die Top 10
+  const top10 = achterbahnen
     .sort((a, b) => b.elo - a.elo)
-    .forEach((bahn) => {
-      const li = document.createElement("li");
-      li.textContent = `${bahn.name} (${bahn.park}): ${bahn.elo}`;
-      rankingList.appendChild(li);
-    });
+    .slice(0, 10);
+  
+  // Füge die Top 10 in die Rangliste ein
+  top10.forEach((bahn, index) => {
+    const li = document.createElement("li");
+    li.textContent = `${index + 1}. ${bahn.name} (${bahn.park}): ${bahn.elo}`;
+    rankingList.appendChild(li);
+  });
 }
+
 
 // Daten speichern
 function saveData() {
