@@ -1,17 +1,14 @@
-// Robust: Daten sicher aus localStorage abrufen
 function loadAchterbahnen() {
   try {
-    // Versuche, gespeicherte Daten aus localStorage zu laden
     const storedData = localStorage.getItem("achterbahnen");
-    if (storedData) {
-      return JSON.parse(storedData); // Versuche, die Daten zu parsen
+    if (storedData && isValidJSON(storedData)) {
+      return JSON.parse(storedData);
     }
   } catch (error) {
-    console.error("Fehler beim Laden von Achterbahnen aus localStorage:", error);
+    console.error("Ungültige Daten gefunden. Initialisiere Standardliste.");
   }
-  // Fallback auf die Standardliste, wenn ein Fehler auftritt
-  return [
-  { name: "Kingda Ka", park: "Six Flags Great Adventure", elo: 1200 },
+  localStorage.setItem("achterbahnen", JSON.stringify([
+{ name: "Kingda Ka", park: "Six Flags Great Adventure", elo: 1200 },
   { name: "Top Thrill Dragster", park: "Cedar Point", elo: 1200 },
   { name: "Steel Vengeance", park: "Cedar Point", elo: 1200 },
   { name: "Millennium Force", park: "Cedar Point", elo: 1200 },
@@ -208,8 +205,18 @@ function loadAchterbahnen() {
   { name: "Jack Rabbit", park: "Kennywood", elo: 1200 },
   { name: "Racer", park: "Kennywood", elo: 1200 },
   { name: "Excalibur", park: "Funtown Splashtown USA", elo: 1200 }
-  ];
+  ]));
+  return JSON.parse(localStorage.getItem("achterbahnen"));
 }
+
+
+
+
+
+
+
+
+
 
 // Daten initialisieren
 const achterbahnen = loadAchterbahnen();
